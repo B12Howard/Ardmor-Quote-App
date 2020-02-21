@@ -1,6 +1,6 @@
 ## Ardmor Inc Quotation System
 
-This was built using [Enuchi's Excellent React Google Apps Script ](https://github.com/enuchi/React-Google-Apps-Script).
+This was built using [Enuchi's Excellent React Google Apps Script](https://github.com/enuchi/React-Google-Apps-Script).
 These are instructions for whomever wants to fix bugs or add features to this app.
 
 ## Installation

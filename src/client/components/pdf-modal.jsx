@@ -3,7 +3,14 @@ import "../styles.css";
 import Modal from "react-bootstrap/Modal";
 
 const PDF = props => {
-  const { status, message, folders, folderURL, resetClick } = props;
+  const {
+    status,
+    message,
+    folders,
+    folderURL,
+    resetClick,
+    downloadURL
+  } = props;
 
   const handleClose = () => {
     setSelectedFolder({ name: "", id: "" });
@@ -95,11 +102,20 @@ const PDF = props => {
           )}
         </div>
         <div>
-          {folderURL && (
-            <a target="_blank" href={folderURL}>
-              Go to your Drive folder
-            </a>
-          )}
+          <div>
+            {folderURL && (
+              <a target="_blank" href={folderURL}>
+                Go to your Drive folder
+              </a>
+            )}
+          </div>
+          <div>
+            {downloadURL && (
+              <a target="_blank" href={downloadURL}>
+                Download PDF
+              </a>
+            )}
+          </div>
         </div>
       </Modal.Body>
 

@@ -6,14 +6,12 @@ import { BrowserRouter } from "react-router-dom";
 import { Container } from "react-bootstrap";
 
 ReactDOM.render(
-  <div>
+  <Container>
     <BrowserRouter>
-      <Container fluid>
-        <Header />
-        <Routes />
-      </Container>
+      <Header />
+      <Routes />
     </BrowserRouter>
-  </div>,
+  </Container>,
   document.getElementById("index")
 );
 /*

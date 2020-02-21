@@ -41,6 +41,7 @@ const ProjectTable = () => {
   const [show, setShow] = useState(false);
   const debouncedInputTerm = useDebounce(inputVal, 1000);
   const [folderURL, setFolderURL] = useState("");
+  const [downloadURL, setDownloadURL] = useState("");
 
   useEffect(() => {
     let user = "";
@@ -255,24 +256,30 @@ const ProjectTable = () => {
   const savePdf = (id, filename) => {
     saveAsPDF(tabNameState, id, filename)
       .then(x => {
-        setFolderURL(x);
-        console.log("Saved PDF with url " + x);
+        setFolderURL(x.folderURL);
+        setDownloadURL(x.downloadURL);
+
+        console.log("Saved PDF with url " + x.folderURL);
+        console.log("Download at " + x.downloadURL);
+
         setShowPdfAlert({ status: true, message: "PDF Created" });
         setClickable(true);
       })
       .catch(error => {
-        console.error(error);
         setShowPdfAlert({ status: true, message: "Error PDF Not Created" });
+
+        console.error(error);
       });
   };
 
   return (
-    <div>
+    <div className="col-sm-12">
       <PDF
         status={showPdfAlert.status}
         message={showPdfAlert.message}
         folders={allFolders}
         folderURL={folderURL}
+        downloadURL={downloadURL}
         resetClick={clickable}
         pdfSaveCallback={(id, filename) => {
           setClickable(false);
@@ -284,7 +291,7 @@ const ProjectTable = () => {
       />
       <Delete value={show} modalCallback={val => handleShowClose(val)} />
       {errorValue}
-      <div className="mt-2 mb-2 d-inline-flex align-items-center ">
+      <div className="mt-2 mb-2 align-items-center ">
         <button
           className="btn btn-success mr-3 mt-2 mb-2"
           onClick={e => {
@@ -304,7 +311,6 @@ const ProjectTable = () => {
               .catch(error => console.error("getDriveFolders() " + error));
           }}
         >
-          {" "}
           Make PDF!
         </button>
 
@@ -324,15 +330,14 @@ const ProjectTable = () => {
         >
           Clear Data
         </button>
-        <div className=" mr-5">{saving}</div>
+        <div className="mr-2 d-inline-block">{saving}</div>
         {boxValues.length
           ? boxValues.map((item, idx) => {
               if (idx == 0) {
                 // This is the Remeasure box
                 return (
-                  <div className="mr-4">
+                  <div className="d-inline-block ml-4">
                     <div className="mr-1">{item[0]}</div>
-                    {"  "}
                     <select
                       className=""
                       value={remeasureVal}
@@ -351,8 +356,8 @@ const ProjectTable = () => {
               } else if (idx == 1) {
                 // This is the D% box
                 return (
-                  <div className="mr-5">
-                    <div className=" mr-2">{item[0]} %</div>
+                  <div className="d-inline-block ml-4">
+                    <div className=" mr-2">{item[0]}%</div>
                     <div className="percent-input-box">
                       <input
                         className="d-input-box"
@@ -369,7 +374,7 @@ const ProjectTable = () => {
                 );
               } else {
                 return (
-                  <div className=" mr-4">
+                  <div className="d-inline-block ml-4">
                     <div className=" mr-2">{item[0]}</div>
                     <div className="">{item[1]}</div>
                   </div>
@@ -381,7 +386,7 @@ const ProjectTable = () => {
       <div className="table-container">
         <div className="d-inline-flex">
           <div className="">
-            <Table className="table" striped hover size="sm">
+            <Table className="table" striped size="sm">
               <thead className="table-success">
                 {tableValues.length
                   ? tableValues.map((item, idx) => {
@@ -400,7 +405,7 @@ const ProjectTable = () => {
                               if (i == 2) {
                                 // This is the People selector
                                 return (
-                                  <td className="text-wrap small ">
+                                  <td className=" small ">
                                     <select
                                       className="w-100"
                                       value={tableValues[idx][i]}
@@ -427,7 +432,7 @@ const ProjectTable = () => {
                               } else if (i == 3) {
                                 // This is the Time selector
                                 return (
-                                  <td className="text-wrap small ">
+                                  <td className=" small ">
                                     <select
                                       value={tableValues[idx][i]}
                                       onChange={e => {
@@ -458,7 +463,7 @@ const ProjectTable = () => {
                                 if (i == 1) {
                                   // This is the Description
                                   return (
-                                    <td className="text-wrap small d-input-box">
+                                    <td className=" small d-input-box">
                                       <input
                                         className="d-input-box-lg"
                                         value={tableValues[idx][i]}
@@ -478,7 +483,7 @@ const ProjectTable = () => {
                                 } else if (i == 0) {
                                   // This is the Q-T column
                                   return (
-                                    <td className="text-wrap small">
+                                    <td className=" small">
                                       <input
                                         className="percent-input-box"
                                         value={tableValues[idx][i]}
@@ -497,7 +502,7 @@ const ProjectTable = () => {
                                   );
                                 } else {
                                   return (
-                                    <td className="text-wrap small">
+                                    <td className=" small">
                                       <input
                                         className="d-input-box-md"
                                         value={tableValues[idx][i]}
@@ -512,7 +517,6 @@ const ProjectTable = () => {
                                           setInputVal(e.target.value);
                                         }}
                                       />
-                                      <div className="d-inline-block table-add-col-space"></div>
                                     </td>
                                   );
                                 }
@@ -522,12 +526,12 @@ const ProjectTable = () => {
                         );
                       }
                     })
-                  : "Loading..."}
+                  : "Loading Table..."}
               </tbody>
             </Table>
           </div>
           <div className="">
-            <Table className="table " striped hover size="sm">
+            <Table className="table" striped size="sm">
               <thead className="table-success">
                 {// This table is to show non-editable values. State updates when values are entered into editable cells
                 uneditableValsState.length
@@ -544,7 +548,7 @@ const ProjectTable = () => {
                           <tr>
                             {item.map((d, i) => {
                               return (
-                                <td className="text-wrap small">
+                                <td className=" small">
                                   <input value={d} disabled />
                                 </td>
                               );
