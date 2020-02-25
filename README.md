@@ -22,17 +22,7 @@ These are instructions for whomever wants to fix bugs or add features to this ap
 > npm run login
 ```
 
-4. Create a new Google Sheets file and a bound Google Scripts project for your React project:
-
-```
-> npm run setup
-Created new Google Sheet: https://drive.google.com/open?id=1lVQUPZ*************************************
-Created new Google Sheets Add-on script: https://script.google.com/d/1K7MPtCH*************************************-**/edit
-```
-
-You've created a new Sheet and attached Script file! (But they're still empty for now.) See the notes below if you want to use an existing Google Sheet and Script instead of creating a new one.
-
-5. Build the app and deploy!
+4. Build the app and deploy!
 
 ```
 > npm run deploy
