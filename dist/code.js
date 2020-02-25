@@ -149,9 +149,11 @@ function getDriveFolders() {
         tempSpreadsheet.getSheetByName("Sheet1");
         tempSpreadsheet.getSheetByName("Sheet1").getRange(1, 1, numRows, numCols).setValues(finalData), 
         SpreadsheetApp.flush();
-        var fullURL = url, blob = SpreadsheetApp.openByUrl(fullURL).getBlob().setName(filename + ".pdf").getAs("application/pdf"), folder = DriveApp.getFolderById(folderId);
-        folder.createFile(blob);
-        return DriveApp.getFileById(newSpreadsheetId).setTrashed(!0), folder.getUrl();
+        var fullURL = url, blob = SpreadsheetApp.openByUrl(fullURL).getBlob().setName(filename + ".pdf").getAs("application/pdf"), folder = DriveApp.getFolderById(folderId), downloadURL = folder.createFile(blob).getDownloadUrl();
+        return DriveApp.getFileById(newSpreadsheetId).setTrashed(!0), {
+            downloadURL: downloadURL,
+            folderURL: folder.getUrl()
+        };
     }, uuid = function() {
         return Utilities.getUuid();
     }, setUpdateID = function(key) {

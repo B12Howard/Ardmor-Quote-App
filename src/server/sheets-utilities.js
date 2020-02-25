@@ -35,6 +35,7 @@ const getDriveFolders = () => {
 
   return data;
 };
+
 /**
  * Extracts the columns we want displayed on the pdf, saves them to a temporary sheet, creates pdf from temp sheet, destroy temp sheet
  * @param {tabName} tabname name of the current sheet tab
@@ -105,9 +106,14 @@ const saveAsPDF = (tabname, folderId, filename) => {
 
   let folder = DriveApp.getFolderById(folderId);
   let pdfFile = folder.createFile(blob);
+  let downloadURL = pdfFile.getDownloadUrl();
+
   DriveApp.getFileById(newSpreadsheetId).setTrashed(true);
 
-  return folder.getUrl();
+  let res = { downloadURL: downloadURL, folderURL: folder.getUrl() };
+
+  //return folder.getUrl();
+  return res;
 };
 
 const uuid = () => {
