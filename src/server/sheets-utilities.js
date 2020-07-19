@@ -120,7 +120,7 @@ const uuid = () => {
   return Utilities.getUuid();
 };
 
-const setUpdateID = key => {
+const setUpdateID = (key) => {
   let lock = LockService.getScriptLock();
   lock.waitLock(15000);
 
@@ -130,7 +130,7 @@ const setUpdateID = key => {
   lock.releaseLock();
 };
 
-const getUpdateID = key => {
+const getUpdateID = (key) => {
   let p = PropertiesService.getDocumentProperties().getProperty(key);
   // Init if no property for the key
   console.log(" P " + p);
@@ -163,7 +163,7 @@ const getSheetsData = () => {
     return {
       text: sheetName,
       sheetIndex: index,
-      isActive: sheetName === activeSheetName
+      isActive: sheetName === activeSheetName,
     };
   });
 };
@@ -172,7 +172,7 @@ const getSheetsData = () => {
  * Gets the cells that the user can edit
  * @param {sheetName} sheetName tab to get data from
  */
-const getSheetByNameData = sheetName => {
+const getSheetByNameData = (sheetName) => {
   let ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
   let editableValues = ss
     .getRange(1, 1, ss.getLastRow() - 1, 9)
@@ -181,7 +181,7 @@ const getSheetByNameData = sheetName => {
   return editableValues;
 };
 
-const getSheetByNameDataNotEditable = sheetName => {
+const getSheetByNameDataNotEditable = (sheetName) => {
   let ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
   let sheetData = ss.getRange(1, 10, ss.getLastRow() - 1, 4).getDisplayValues();
   let data = [];
@@ -193,9 +193,10 @@ const getSheetByNameDataNotEditable = sheetName => {
   return data;
 };
 
-const getSheetByNameBoxData = sheetName => {
+const getSheetByNameBoxData = (sheetName) => {
   let ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
   let sheetData = ss.getRange(2, 16, 7, 2).getDisplayValues();
+  let jobCost = ss.getRange(19, 16, 1, 2).getDisplayValues();
   let data = [];
 
   for (let i = 0; i < sheetData.length; i++) {
@@ -208,16 +209,17 @@ const getSheetByNameBoxData = sheetName => {
     }
   }
 
+  sheetData.push(jobCost[0]);
   console.log(sheetData);
   return sheetData;
 };
 
-const addSheet = sheetTitle => {
+const addSheet = (sheetTitle) => {
   SpreadsheetApp.getActiveSpreadsheet().insertSheet(sheetTitle);
   return getSheetsData();
 };
 
-const setActiveSheet = sheetName => {
+const setActiveSheet = (sheetName) => {
   SpreadsheetApp.getActiveSpreadsheet()
     .getSheetByName(sheetName)
     .activate();
@@ -253,7 +255,7 @@ const updateDataCell = (rowIdx, updateVal, col, tabName) => {
   lock.releaseLock();
 };
 
-const clearData = sheetName => {
+const clearData = (sheetName) => {
   //let lock = LockService.getUserLock();
   //lock.waitLock(10000);
   const ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
@@ -335,5 +337,5 @@ export {
   clearData,
   saveAllChanges,
   getDriveID,
-  getDriveFolders
+  getDriveFolders,
 };

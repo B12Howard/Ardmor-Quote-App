@@ -17,7 +17,7 @@ const ProjectTable = () => {
     getSheetByNameDataNotEditable,
     getUserEmail,
     saveAsPDF,
-    getDriveFolders
+    getDriveFolders,
   } = server;
 
   const [tableValues, setTableValues] = useState([]);
@@ -36,7 +36,7 @@ const ProjectTable = () => {
   const [boxValues, setBoxValues] = useState([]);
   const [showPdfAlert, setShowPdfAlert] = useState({
     status: false,
-    message: ""
+    message: "",
   });
   const [show, setShow] = useState(false);
   const debouncedInputTerm = useDebounce(inputVal, 1000);
@@ -46,37 +46,37 @@ const ProjectTable = () => {
   useEffect(() => {
     let user = "";
     getUserEmail()
-      .then(res => {
+      .then((res) => {
         user = res;
         setTabNameState(user);
 
         getSheetByNameData(user)
-          .then(x => {
+          .then((x) => {
             console.log("set sheet data");
             setTableValues(x);
           })
-          .catch(error => {
+          .catch((error) => {
             errorValue = "Error loading data. Refresh to try again";
             "getApiData error " + error;
           });
 
         getSheetByNameDataNotEditable(user)
-          .then(y => {
+          .then((y) => {
             setUneditableValsState(y);
           })
-          .catch(error =>
+          .catch((error) =>
             console.error("getSheetByNameDataNotEditable " + error)
           );
 
         getSheetByNameBoxData(user)
-          .then(z => {
+          .then((z) => {
             console.log("getting box data");
             setBoxValues(z);
             setDValueState(z[1][1] * 100);
           })
-          .catch(error => console.error("getSheetByNameBoxData " + error));
+          .catch((error) => console.error("getSheetByNameBoxData " + error));
       })
-      .catch(error => console.error("tabPromise " + error));
+      .catch((error) => console.error("tabPromise " + error));
   }, []);
 
   // Effect for user changes to values
@@ -85,34 +85,34 @@ const ProjectTable = () => {
       // if (idxRef !== null && indexRef !== null && inputVal !== null) {
       setSaving("☑️");
       saveAllChanges(tabNameState, tableValues, boxValues)
-        .then(x => {
+        .then((x) => {
           idxRef.current = "";
           indexRef.current = "";
 
           let handler = setTimeout(() => {
             getSheetByNameBoxData(tabNameState)
-              .then(x => {
+              .then((x) => {
                 setBoxValues(x);
                 setRemeasureVal(x[0][1]);
                 setDValueState(x[1][1] * 100);
                 getSheetByNameDataNotEditable(tabNameState)
-                  .then(z => {
+                  .then((z) => {
                     setUneditableValsState(z);
                     console.log(" debouncedInputTerm ✅");
                     setSaving("✅");
                   })
-                  .catch(error =>
+                  .catch((error) =>
                     console.error("getSheetByNameDataNotEditable " + error)
                   );
               })
-              .catch(error =>
+              .catch((error) =>
                 console.error(
                   "getSheetByNameBoxData debouncedInputTerm " + error
                 )
               );
           }, 3000);
         })
-        .catch(error => console.error(error));
+        .catch((error) => console.error(error));
       // }
     }
   }, [debouncedInputTerm]);
@@ -129,32 +129,32 @@ const ProjectTable = () => {
         } else value = inputVal2;
 
         updateDataCell(idxRef.current, value, indexRef.current, tabNameState)
-          .then(x => {
+          .then((x) => {
             idxRef.current = "";
             indexRef.current = "";
           })
-          .catch(error => console.error(error));
+          .catch((error) => console.error(error));
       }
 
       // Delay to allow spreadsheet to change values before fetching
       let handler = setTimeout(() => {
         getSheetByNameBoxData(tabNameState)
-          .then(y => {
+          .then((y) => {
             setBoxValues(y);
             setRemeasureVal(y[0][1]);
             setDValueState(y[1][1] * 100);
 
             getSheetByNameDataNotEditable(tabNameState)
-              .then(z => {
+              .then((z) => {
                 setUneditableValsState(z);
                 console.log("✅");
                 setSaving("✅");
               })
-              .catch(error =>
+              .catch((error) =>
                 console.error("getSheetByNameDataNotEditable " + error)
               );
           })
-          .catch(error =>
+          .catch((error) =>
             console.error("getSheetByNameBoxData inputVal2 " + error)
           );
       }, 3000);
@@ -165,26 +165,26 @@ const ProjectTable = () => {
     setSaving("☑️");
     // Send the whole state to a server function that will loop through A-J and set the values of non-hidden columns
     saveAllChanges(tabNameState, tableValues, boxValues)
-      .then(x => {
+      .then((x) => {
         getSheetByNameDataNotEditable(tabNameState)
-          .then(z => {
+          .then((z) => {
             setUneditableValsState(z);
 
             getSheetByNameBoxData(tabNameState)
-              .then(y => {
+              .then((y) => {
                 console.log("✅");
                 setRemeasureVal(y[0][1]);
                 setDValueState(y[1][1] * 100);
                 setBoxValues(y);
                 setSaving("✅");
               })
-              .catch(error => console.log("getSheetByNameBoxData " + error));
+              .catch((error) => console.log("getSheetByNameBoxData " + error));
           })
-          .catch(error =>
+          .catch((error) =>
             console.error("getSheetByNameDataNotEditable " + error)
           );
       })
-      .catch(error => console.error(error));
+      .catch((error) => console.error(error));
 
     console.log("udpate totals");
   };
@@ -204,7 +204,7 @@ const ProjectTable = () => {
   const handleShow = () => setShow(true);
 
   // Delete all values on spreadsheet, update states to show user
-  const handleShowClose = val => {
+  const handleShowClose = (val) => {
     if (val === true) {
       // Delete values
       clearData(tabNameState)
@@ -212,36 +212,36 @@ const ProjectTable = () => {
           // Delay to allow spreadsheet to change values before fetching
           let handler = setTimeout(() => {
             getSheetByNameData(tabNameState)
-              .then(y => {
+              .then((y) => {
                 console.log("set sheet data");
                 setTableValues(y);
               })
-              .catch(error => {
+              .catch((error) => {
                 errorValue = "Error loading data. Refresh to try again";
                 "getApiData error " + error;
               });
 
             getSheetByNameBoxData(tabNameState)
-              .then(z => {
+              .then((z) => {
                 setBoxValues(z);
                 setRemeasureVal(z[0][1]);
                 setDValueState(z[1][1] * 100);
                 getSheetByNameDataNotEditable(tabNameState)
-                  .then(x => {
+                  .then((x) => {
                     setUneditableValsState(x);
                     console.log("✅");
                     setSaving("✅");
                   })
-                  .catch(error =>
+                  .catch((error) =>
                     console.error("getSheetByNameDataNotEditable " + error)
                   );
               })
-              .catch(error =>
+              .catch((error) =>
                 console.error("getSheetByNameBoxData handleShowClose " + error)
               );
           }, 3000);
         })
-        .catch(error => console.error(error));
+        .catch((error) => console.error(error));
       console.log("Deleted values");
     }
     setShow(false);
@@ -255,7 +255,7 @@ const ProjectTable = () => {
 
   const savePdf = (id, filename) => {
     saveAsPDF(tabNameState, id, filename)
-      .then(x => {
+      .then((x) => {
         setFolderURL(x.folderURL);
         setDownloadURL(x.downloadURL);
 
@@ -265,7 +265,7 @@ const ProjectTable = () => {
         setShowPdfAlert({ status: true, message: "PDF Created" });
         setClickable(true);
       })
-      .catch(error => {
+      .catch((error) => {
         setShowPdfAlert({ status: true, message: "Error PDF Not Created" });
 
         console.error(error);
@@ -289,26 +289,26 @@ const ProjectTable = () => {
         }}
         pdfModalCallback={() => handleShowClosePdf()}
       />
-      <Delete value={show} modalCallback={val => handleShowClose(val)} />
+      <Delete value={show} modalCallback={(val) => handleShowClose(val)} />
       {errorValue}
       <div className="mt-2 mb-2 align-items-center ">
         <button
           className="btn btn-success mr-3 mt-2 mb-2"
-          onClick={e => {
+          onClick={(e) => {
             if (!allFolders.length) {
               setShowPdfAlert({ status: true, message: "Loading Folders..." });
             }
             getDriveFolders()
-              .then(folders => {
+              .then((folders) => {
                 setFoldersState(folders);
 
                 setShowPdfAlert({
                   status: true,
-                  message: "Select a folder and enter a file name"
+                  message: "Select a folder and enter a file name",
                 });
                 console.log("finishd getting folders");
               })
-              .catch(error => console.error("getDriveFolders() " + error));
+              .catch((error) => console.error("getDriveFolders() " + error));
           }}
         >
           Make PDF!
@@ -316,7 +316,7 @@ const ProjectTable = () => {
 
         <button
           className="btn btn-success mr-3"
-          onClick={e => {
+          onClick={(e) => {
             saveValues();
           }}
         >
@@ -324,7 +324,7 @@ const ProjectTable = () => {
         </button>
         <button
           className="btn btn-danger mr-4"
-          onClick={e => {
+          onClick={(e) => {
             handleShow();
           }}
         >
@@ -339,9 +339,9 @@ const ProjectTable = () => {
                   <div className="d-inline-block ml-4">
                     <div className="mr-1">{item[0]}</div>
                     <select
-                      className=""
+                      className="input-font "
                       value={remeasureVal}
-                      onChange={e => {
+                      onChange={(e) => {
                         idxRef.current = 1;
                         indexRef.current = 16;
                         setRemeasureVal(e.target.value);
@@ -356,13 +356,13 @@ const ProjectTable = () => {
               } else if (idx == 1) {
                 // This is the D% box
                 return (
-                  <div className="d-inline-block ml-4">
+                  <div className="d-inline-block ml-4 mr-4">
                     <div className=" mr-2">{item[0]}%</div>
                     <div className="percent-input-box">
                       <input
-                        className="d-input-box"
+                        className="d-input-box input-font"
                         value={dValueState}
-                        onChange={e => {
+                        onChange={(e) => {
                           idxRef.current = 2;
                           indexRef.current = 16;
                           setDValueState(e.target.value);
@@ -374,7 +374,7 @@ const ProjectTable = () => {
                 );
               } else {
                 return (
-                  <div className="d-inline-block ml-4">
+                  <div className="d-inline-block ml-2">
                     <div className=" mr-2">{item[0]}</div>
                     <div className="">{item[1]}</div>
                   </div>
@@ -386,7 +386,7 @@ const ProjectTable = () => {
       <div className="table-container">
         <div className="d-inline-flex">
           <div className="">
-            <Table className="table" striped size="sm">
+            <Table className="table" hover striped size="sm">
               <thead className="table-success">
                 {tableValues.length
                   ? tableValues.map((item, idx) => {
@@ -405,11 +405,11 @@ const ProjectTable = () => {
                               if (i == 2) {
                                 // This is the People selector
                                 return (
-                                  <td className=" small ">
+                                  <td className="small">
                                     <select
-                                      className="w-100"
+                                      className="custom-select-sm w-100"
                                       value={tableValues[idx][i]}
-                                      onChange={e => {
+                                      onChange={(e) => {
                                         idxRef.current = idx;
                                         indexRef.current = i;
                                         onCellChange(
@@ -434,8 +434,9 @@ const ProjectTable = () => {
                                 return (
                                   <td className=" small ">
                                     <select
+                                      className="custom-select-sm"
                                       value={tableValues[idx][i]}
-                                      onChange={e => {
+                                      onChange={(e) => {
                                         idxRef.current = idx;
                                         indexRef.current = i;
                                         onCellChange(
@@ -465,9 +466,9 @@ const ProjectTable = () => {
                                   return (
                                     <td className=" small d-input-box">
                                       <input
-                                        className="d-input-box-lg"
+                                        className="d-input-box-lg input-font"
                                         value={tableValues[idx][i]}
-                                        onChange={e => {
+                                        onChange={(e) => {
                                           idxRef.current = idx;
                                           indexRef.current = i;
                                           onCellChange(
@@ -485,9 +486,9 @@ const ProjectTable = () => {
                                   return (
                                     <td className=" small">
                                       <input
-                                        className="percent-input-box"
+                                        className="input-font percent-input-box"
                                         value={tableValues[idx][i]}
-                                        onChange={e => {
+                                        onChange={(e) => {
                                           idxRef.current = idx;
                                           indexRef.current = i;
                                           onCellChange(
@@ -502,11 +503,11 @@ const ProjectTable = () => {
                                   );
                                 } else {
                                   return (
-                                    <td className=" small">
+                                    <td className="small">
                                       <input
-                                        className="d-input-box-md"
+                                        className="d-input-box-md input-font"
                                         value={tableValues[idx][i]}
-                                        onChange={e => {
+                                        onChange={(e) => {
                                           idxRef.current = idx;
                                           indexRef.current = i;
                                           onCellChange(
@@ -549,7 +550,11 @@ const ProjectTable = () => {
                             {item.map((d, i) => {
                               return (
                                 <td className=" small">
-                                  <input value={d} disabled />
+                                  <input
+                                    className="input-font"
+                                    value={d}
+                                    disabled
+                                  />
                                 </td>
                               );
                             })}

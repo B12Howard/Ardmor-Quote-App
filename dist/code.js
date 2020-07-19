@@ -184,9 +184,9 @@ function getDriveFolders() {
         for (var ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName), sheetData = ss.getRange(1, 10, ss.getLastRow() - 1, 4).getDisplayValues(), data = [], i = 0; i < sheetData.length; i++) data.push([ sheetData[i][3] ]);
         return console.log(data), data;
     }, getSheetByNameBoxData = function(sheetName) {
-        for (var sheetData = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName).getRange(2, 16, 7, 2).getDisplayValues(), data = [], i = 0; i < sheetData.length; i++) 1 == i ? (sheetData[i][1] = sheetData[i][1].toString().replace(/\%/, ""), 
+        for (var ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName), sheetData = ss.getRange(2, 16, 7, 2).getDisplayValues(), jobCost = ss.getRange(19, 16, 1, 2).getDisplayValues(), data = [], i = 0; i < sheetData.length; i++) 1 == i ? (sheetData[i][1] = sheetData[i][1].toString().replace(/\%/, ""), 
         data.push(sheetData[i])) : data.push(sheetData[i]);
-        return console.log(sheetData), sheetData;
+        return sheetData.push(jobCost[0]), console.log(sheetData), sheetData;
     }, addSheet = function(sheetTitle) {
         return SpreadsheetApp.getActiveSpreadsheet().insertSheet(sheetTitle), getSheetsData();
     }, setActiveSheet = function(sheetName) {

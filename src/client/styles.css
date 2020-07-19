@@ -98,7 +98,9 @@
   white-space: pre-wrap;
   word-wrap: break-word;
 }
-
+.input-font {
+  font-size: 16px !important;
+}
 /*!
  * Bootswatch v4.4.1
  * Homepage: https://bootswatch.com
@@ -179,7 +181,7 @@ body {
   font-family: "Lato", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
     "Segoe UI Symbol";
-  font-size: 0.9375rem;
+  font-size: 1.2rem;
   font-weight: 400;
   line-height: 1.5;
   color: #212529;
@@ -362,10 +364,15 @@ button:focus {
 }
 
 input,
-button,
 select,
 optgroup,
 textarea {
+  margin: 0;
+  font-family: inherit;
+  line-height: inherit;
+}
+
+button {
   margin: 0;
   font-family: inherit;
   font-size: inherit;
@@ -572,7 +579,7 @@ hr {
 
 small,
 .small {
-  font-size: 90%;
+  font-size: 80%;
   font-weight: 400;
 }
 
@@ -4627,11 +4634,12 @@ input[type="button"].btn-block {
 }
 
 .custom-select-sm {
-  height: calc(1.5em + 0.5rem + 2px);
-  padding-top: 0.25rem;
-  padding-bottom: 0.25rem;
-  padding-left: 0.5rem;
-  font-size: 0.8203125rem;
+  /*height: calc(1.5em + 0.5rem + 2px);*/
+  padding-top: 0.1rem;
+  padding-bottom: 0.1rem;
+  padding-left: 0rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
 }
 
 .custom-select-lg {
